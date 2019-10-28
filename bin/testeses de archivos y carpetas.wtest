@@ -1,0 +1,36 @@
+import Parcial.*
+
+describe "Test re chetos del parcial" {
+
+	var archivo1 = new Archivo(nombre = "Posta que no soy unvirus, creeme, soy un Delfin =)", contenido = "Ya te dije que no soy un virus verdad?")
+	var carpetaVacia = new Carpeta(nombre = "Cosas re importantes (no hay porno)")
+	var carpetaConAlgo = new Carpeta(nombre = "Solucion del parcial de pdep 2019", archivos = #{ archivo1 })
+
+	test "Cuando una carpeta agrega un archivo, este aparece en su coleccion de archivos" {
+		carpetaVacia.agregarArchivo(archivo1)
+		assert.that(carpetaVacia.archivos().contains(archivo1))
+	}
+
+	test "Cuando una carpeta intenta agregar un archivo con nombre repetido, devuelve error." {
+		assert.throwsExceptionWithMessage("No se puede agregar un archivo con un nombre ya existente.", { carpetaConAlgo.agregarArchivo(archivo1)})
+	}
+
+	test "Una carpeta puede saber si contiene un archivo con un nombre en especifico" {
+		assert.that(carpetaConAlgo.existeArchivoConNombre("Posta que no soy unvirus, creeme, soy un Delfin =)"))
+	}
+
+	test "Una carpeta puede saber si no contiene un archivo con un nombre en especifico" {
+		assert.notThat(carpetaVacia.existeArchivoConNombre("Posta que no soy unvirus, creeme, soy un Delfin =)"))
+	}
+	
+	test "una carpeta no puede eliminar un archivo no existente"{
+		assert.throwsExceptionWithMessage("No existe el archivo especificado", {carpetaVacia.eliminarArchivo("Capitulos buenos de Dragon ball super")})
+	}
+	
+	test "Una carpeta puede eliminar un archivo existente"{
+		carpetaConAlgo.eliminarArchivo("Posta que no soy unvirus, creeme, soy un Delfin =)")
+		assert.notThat(carpetaConAlgo.existeArchivoConNombre("Posta que no soy unvirus, creeme, soy un Delfin =)"))
+	}
+
+}
+
